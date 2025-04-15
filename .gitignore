@@ -1,0 +1,12 @@
+# IDE
+.idea/
+
+# Gradle
+.gradle/
+build/
+
+# Kotlin
+.kotlin/
+
+# Secrets
+http-client.private.env.json

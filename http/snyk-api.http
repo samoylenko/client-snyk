@@ -1,0 +1,38 @@
+@snyk-api-version  = 2024-10-15
+@snyk-content-type = application/vnd.api+json
+
+### Snyk get orgs
+
+GET https://api.snyk.io/rest/orgs?version={{ snyk-api-version }}
+Content-Type: {{ snyk-content-type }}
+Authorization: token {{ snyk-token }}
+
+### Snyk get org projects
+
+GET https://api.snyk.io/rest/orgs/{{ snyk-test-org }}/projects?version={{ snyk-api-version }}
+Content-Type: {{ snyk-content-type }}
+Authorization: token {{ snyk-token }}
+
+### Snyk project issues aggregated
+
+POST https://api.snyk.io/v1/org/{{ snyk-test-org }}/project/{{ snyk-test-project }}/aggregated-issues?
+    version={{ snyk-api-version }}
+Content-Type: {{ snyk-content-type }}
+Authorization: token {{ snyk-token }}
+
+### Snyk get all org targets
+
+GET https://api.snyk.io/rest/orgs/{{ snyk-test-org }}/targets?version={{ snyk-api-version }}
+Content-Type: {{ snyk-content-type }}
+Authorization: token {{ snyk-token }}
+
+### Snyk get target info
+
+GET https://api.snyk.io/rest/orgs/{{ snyk-test-org }}/targets/{{ snyk-test-target }}?version={{ snyk-api-version }}
+Content-Type: {{ snyk-content-type }}
+Authorization: token {{ snyk-token }}
+
+### DANGER ZONE: Snyk delete project
+# DELETE https://api.snyk.io/v1/org/{{ snyk-test-org }}/project/{{ snyk-test-project }}?version={{ snyk-api-version }}
+# Content-Type: {{ snyk-content-type }}
+# Authorization: token {{ snyk-token }}

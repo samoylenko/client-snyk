@@ -22,7 +22,7 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.decodeFromJsonElement
 import kotlinx.serialization.json.jsonPrimitive
 import kotlin.time.Duration
-import kotlin.time.Duration.Companion.seconds
+import kotlin.time.Duration.Companion.milliseconds
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
@@ -34,7 +34,7 @@ import kotlin.uuid.Uuid
  */
 class SnykClient(
     snykToken: String? = null,
-    private val rateLimitDelay: Duration = 1.seconds,
+    private val rateLimitDelay: Duration = 50.milliseconds,
 ) : AutoCloseable {
     companion object {
         const val SNYK_API_VERSION = "2024-06-21"

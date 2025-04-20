@@ -184,8 +184,11 @@ class SnykClient(
      *
      * @param orgId Org ID
      */
-    suspend fun getOrgTargets(orgId: String): Collection<TargetInfo> =
-        pagedSnykRequest("/rest/orgs/${orgId}/targets").map {
+    suspend fun getOrgTargets(
+        orgId: String,
+        excludeEmpty: Boolean = true
+    ): Collection<TargetInfo> =
+        pagedSnykRequest("/rest/orgs/${orgId}/targets?exclude_empty=${excludeEmpty}").map {
             TargetInfo(
                 id = it.id,
                 type = it.type,

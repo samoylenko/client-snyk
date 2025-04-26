@@ -202,8 +202,9 @@ class SnykClient(
      * @param orgId Org ID
      * @param targetId Target ID
      */
-    suspend fun deleteTarget(orgId: String, targetId: String) =
+    suspend fun deleteTarget(orgId: String, targetId: String) {
         client.delete("/rest/orgs/$orgId/targets/$targetId")
+    }
 
     /**
      * [V1: Get Aggregated Project Issues](https://docs.snyk.io/snyk-api/reference/projects-v1#org-orgid-project-projectid-aggregated-issues)

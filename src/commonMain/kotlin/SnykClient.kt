@@ -197,6 +197,15 @@ class SnykClient(
         }
 
     /**
+     * [Delete target by target ID](https://apidocs.snyk.io/?version=2024-10-15#delete-/orgs/-org_id-/targets/-target_id-)
+     *
+     * @param orgId Org ID
+     * @param targetId Target ID
+     */
+    suspend fun deleteTarget(orgId: String, targetId: String) =
+        client.delete("/rest/orgs/$orgId/targets/$targetId")
+
+    /**
      * [V1: Get Aggregated Project Issues](https://docs.snyk.io/snyk-api/reference/projects-v1#org-orgid-project-projectid-aggregated-issues)
      *
      * @param orgId Org ID

@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
 
 @Serializable
-data class ProjectAttributes(
+public data class ProjectAttributes(
     val name: String,
     val type: String,
     @SerialName("target_file") val targetFile: String,

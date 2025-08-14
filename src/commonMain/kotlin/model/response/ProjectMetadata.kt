@@ -5,6 +5,6 @@ import kotlinx.serialization.Serializable
 import kotlinx.datetime.Instant
 
 @Serializable
-data class ProjectMetadata(
+public data class ProjectMetadata(
     @SerialName("cli_monitored_at") val cliMonitoredAt: Instant? = null,
 )

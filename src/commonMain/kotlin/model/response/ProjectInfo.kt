@@ -3,7 +3,7 @@ package dev.samoylenko.client.snyk.model.response
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ProjectInfo(
+public data class ProjectInfo(
     override val id: String,
     override val type: String,
     val attributes: ProjectAttributes,

@@ -4,7 +4,7 @@ import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class IgnoreReason(
+public data class IgnoreReason(
     val path: Collection<String>,
     val reason: String,
     val source: String,

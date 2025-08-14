@@ -3,7 +3,7 @@ package dev.samoylenko.client.snyk.model.response
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class FixInfo(
+public data class FixInfo(
     val isUpgradable: Boolean? = null,
     val isPinnable: Boolean? = null,
     val isPatchable: Boolean? = null,

@@ -32,11 +32,11 @@ import kotlin.uuid.Uuid
  * @param snykToken Snyk API Token. If not provided, will attempt to get it from the local environment.
  * @param rateLimitDelay Delay between Snyk HTTP requests. A primitive rate limiting implementation.
  */
-class SnykClient(
+public class SnykClient(
     snykToken: String? = null,
     private val rateLimitDelay: Duration = 50.milliseconds,
 ) : AutoCloseable {
-    companion object {
+    private companion object {
         const val SNYK_API_VERSION = "2024-06-21"
 
         const val TOKEN_TYPE_DEFAULT = "token"
@@ -99,7 +99,7 @@ class SnykClient(
             } ?: throw Error("Could not find a Snyk token. Please provide a Snyk API token")
 
     /** Direct access to the HTTP Client instance configured to use Snyk API */
-    val client = HttpClient {
+    public val client: HttpClient = HttpClient {
         install(ContentNegotiation) { json(defaultJson) }
         install(Logging) { level = LogLevel.INFO } // TODO: allow user set logging level
 
@@ -126,7 +126,7 @@ class SnykClient(
      *
      * @return Collection of Snyk data
      */
-    suspend fun pagedSnykRequest(
+    public suspend fun pagedSnykRequest(
         urlString: String,
         method: HttpMethod = HttpMethod.Get,
     ): Collection<ResponseDataElement> {
@@ -146,7 +146,7 @@ class SnykClient(
     /**
      * Get all [orgs](https://apidocs.snyk.io/?version=2024-10-15#get-/orgs)
      */
-    suspend fun getAllOrgs(): Collection<OrgInfo> =
+    public suspend fun getAllOrgs(): Collection<OrgInfo> =
         pagedSnykRequest("/rest/orgs").map {
             OrgInfo(
                 id = it.id,
@@ -158,7 +158,7 @@ class SnykClient(
     /**
      * [Get all org projects](https://apidocs.snyk.io/?version=2024-10-15#get-/orgs/-org_id-/projects)
      */
-    suspend fun getOrgProjects(orgId: String): Collection<ProjectInfo> =
+    public suspend fun getOrgProjects(orgId: String): Collection<ProjectInfo> =
         pagedSnykRequest("/rest/orgs/${orgId}/projects").map {
             ProjectInfo(
                 id = it.id,
@@ -175,7 +175,7 @@ class SnykClient(
      * @param orgId Org ID
      * @param projectId Project ID
      */
-    suspend fun deleteProject(orgId: String, projectId: String) {
+    public suspend fun deleteProject(orgId: String, projectId: String) {
         client.delete("/rest/orgs/$orgId/projects/$projectId")
     }
 
@@ -184,7 +184,7 @@ class SnykClient(
      *
      * @param orgId Org ID
      */
-    suspend fun getOrgTargets(
+    public suspend fun getOrgTargets(
         orgId: String,
         excludeEmpty: Boolean = true
     ): Collection<TargetInfo> =
@@ -202,7 +202,7 @@ class SnykClient(
      * @param orgId Org ID
      * @param targetId Target ID
      */
-    suspend fun deleteTarget(orgId: String, targetId: String) {
+    public suspend fun deleteTarget(orgId: String, targetId: String) {
         client.delete("/rest/orgs/$orgId/targets/$targetId")
     }
 
@@ -213,7 +213,7 @@ class SnykClient(
      * @param projectId Project ID
      * @param aggregatedIssuesRequest additional request config
      */
-    suspend fun getProjectIssuesAggregated(
+    public suspend fun getProjectIssuesAggregated(
         orgId: String,
         projectId: String,
         aggregatedIssuesRequest: AggregatedIssuesRequest? = null
@@ -231,7 +231,7 @@ class SnykClient(
      *
      * @return Map: Issue ID to Jira information
      */
-    suspend fun getProjectJiraIssues(
+    public suspend fun getProjectJiraIssues(
         orgId: String,
         projectId: String,
     ): JiraIssuesResponse =

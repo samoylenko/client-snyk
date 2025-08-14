@@ -4,7 +4,7 @@ import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnPlugin
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootExtension
 
 group = "dev.samoylenko"
-version = "0.1.1"
+version = "0.1.2-SNAPSHOT"
 
 repositories {
     mavenCentral()
@@ -25,6 +25,8 @@ plugins {
 }
 
 kotlin {
+    explicitApi()
+
     withSourcesJar(publish = true)
 
     js {

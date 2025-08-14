@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
 
 @Serializable
-data class Issue(
+public data class Issue(
     val id: String,
     val issueType: String,
     val pkgName: String,

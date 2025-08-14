@@ -3,7 +3,7 @@ package dev.samoylenko.client.snyk.model.response
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class IssueData(
+public data class IssueData(
     val id: String,
     val title: String,
     val severity: String,

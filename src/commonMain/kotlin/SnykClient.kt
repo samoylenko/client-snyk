@@ -1,6 +1,7 @@
 package dev.samoylenko.client.snyk
 
 import dev.samoylenko.client.snyk.model.request.AggregatedIssuesRequest
+import dev.samoylenko.client.snyk.model.request.CreateNewOrganizationsBody
 import dev.samoylenko.client.snyk.model.response.*
 import dev.samoylenko.util.platform.Extensions.readText
 import dev.samoylenko.util.platform.PlatformUtils
@@ -57,7 +58,7 @@ public class SnykClient(
          *
          * @return token and its type ("token", "bearer")
          */
-        fun attemptGetSnykToken(): Pair<String, String>? =
+        private fun attemptGetSnykToken(): Pair<String, String>? =
             PlatformUtils.getEnv("SNYK_TOKEN")?.let {
                 logger.debug { "Detected an API token in SNYK_TOKEN environment variable" }
                 Pair(it, TOKEN_TYPE_DEFAULT)
@@ -88,15 +89,16 @@ public class SnykClient(
                     }
     }
 
+    private val snykAuthHeader: String = getSnykAuthHeaderValue(snykToken)
+
     @OptIn(ExperimentalUuidApi::class)
     private fun getSnykAuthHeaderValue(snykToken: String?): String =
         snykToken?.let {
             val isUUid = runCatching { Uuid.parse(snykToken) }.isSuccess
             if (isUUid) "$TOKEN_TYPE_DEFAULT $snykToken" else "$TOKEN_TYPE_FALLBACK $snykToken"
-        }
-            ?: attemptGetSnykToken()?.let { (token, type) ->
-                "$type $token"
-            } ?: throw Error("Could not find a Snyk token. Please provide a Snyk API token")
+        } ?: attemptGetSnykToken()?.let { (token, type) ->
+            "$type $token"
+        } ?: throw Error("Could not find a Snyk token")
 
     /** Direct access to the HTTP Client instance configured to use Snyk API */
     public val client: HttpClient = HttpClient {
@@ -108,7 +110,7 @@ public class SnykClient(
             url("https://api.snyk.io")
             url.parameters.appendIfNameAbsent("version", SNYK_API_VERSION)
             header(HttpHeaders.ContentType, "application/vnd.api+json")
-            header(HttpHeaders.Authorization, getSnykAuthHeaderValue(snykToken))
+            header(HttpHeaders.Authorization, snykAuthHeader)
         }
 
         expectSuccess = true
@@ -211,7 +213,7 @@ public class SnykClient(
      *
      * @param orgId Org ID
      * @param projectId Project ID
-     * @param aggregatedIssuesRequest additional request config
+     * @param aggregatedIssuesRequest Additional request config
      */
     public suspend fun getProjectIssuesAggregated(
         orgId: String,

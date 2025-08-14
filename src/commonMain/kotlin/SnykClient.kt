@@ -240,4 +240,30 @@ public class SnykClient(
         client
             .get("/v1/org/${orgId}/project/${projectId}/jira-issues")
             .body()
+
+    /**
+     * [V1: Create a new Snyk Org](https://docs.snyk.io/snyk-api/reference/organizations-v1#post-org)
+     *
+     * @param orgName The name of the new organization
+     * @param groupId The group ID. The API_KEY must have access to this group
+     * @param sourceOrgId ID of an organization to copy settings from. If provided, this organization must be associated with the same group.
+     *
+     * @return New Org Information
+     */
+    public suspend fun createOrg(
+        orgName: String,
+        groupId: String? = null,
+        sourceOrgId: String? = null,
+    ): CreateANewOrganizationResponse =
+        client
+            .post("/v1/org") {
+                contentType(ContentType.Application.Json)
+                setBody(
+                    CreateNewOrganizationsBody(
+                        name = orgName,
+                        groupId = groupId,
+                        sourceOrgId = sourceOrgId
+                    )
+                )
+            }.body()
 }

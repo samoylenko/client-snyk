@@ -1,10 +1,12 @@
 import dev.samoylenko.client.snyk.SnykClient
 import dev.samoylenko.client.snyk.model.request.AggregatedIssuesRequest
 import io.github.oshai.kotlinlogging.KotlinLogging
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue
+import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.minutes
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
@@ -18,6 +20,18 @@ class SnykClientTest {
         private const val MAX_TAKE = 5
 
         private val snykClient = SnykClient()
+
+        // Snyk Jira API currently doesn't support Infra type projects: https://docs.snyk.io/scan-with-snyk/snyk-iac/snyk-iac-integrations/jira-integration-for-iac
+        // Data from: https://docs.snyk.io/scan-with-snyk/snyk-iac
+        // Enum: https://docs.snyk.io/snyk-api/api-endpoints-index-and-tips/project-type-responses-from-the-api
+        private val unsupportedTypesJiraApi = """
+            armconfig
+            cloudformationconfig
+            helmconfig
+            k8sconfig
+            terraformconfig
+            terraformplan
+        """.trimIndent().split("\n")
     }
 
     @Test
@@ -34,15 +48,20 @@ class SnykClientTest {
         }
 
         // Test getting projects
-        val orgProjects = snykOrgs.take(MAX_TAKE).associateWith { snykClient.getOrgProjects(it.id) }
+        val orgProjects = snykOrgs.take(MAX_TAKE).associateWith {
+            snykClient.getOrgProjects(it.id)
+                // Remove unsupported projects of unsupported types
+                .filterNot { projectInfo -> projectInfo.type.lowercase() in unsupportedTypesJiraApi }
+        }
         assertTrue("Must be at least one Snyk project to test with") { orgProjects.isNotEmpty() }
 
         orgProjects.forEach { (orgInfo, projects) ->
-            projects.forEach { project ->
-                logger.info { "${orgInfo.id} :: ${project.id} - ${project.attributes.name}" }
-                // assertDoesNotThrow
-                assertNotEquals(Uuid.NIL, Uuid.parse(project.id))
-            }
+            projects
+                .forEach { project ->
+                    logger.info { "${orgInfo.id} :: ${project.id} - ${project.attributes.name}" }
+                    // assertDoesNotThrow
+                    assertNotEquals(Uuid.NIL, Uuid.parse(project.id))
+                }
         }
 
         var issueCount = 0
@@ -50,6 +69,9 @@ class SnykClientTest {
 
         orgProjects.asIterable().take(MAX_TAKE).forEach { (orgInfo, projects) ->
             projects.asIterable().take(MAX_TAKE).forEach { project ->
+
+                // Rate limiting
+                delay(50.milliseconds)
 
                 // Test getting aggregate issues report
                 val projectIssuesAggregated = snykClient.getProjectIssuesAggregated(

@@ -7,4 +7,5 @@ public data class TargetInfo(
     override val id: String,
     override val type: String,
     val attributes: TargetAttributes,
+    val relationships: Map<String, Relationship?>?,
 ) : InfoElement

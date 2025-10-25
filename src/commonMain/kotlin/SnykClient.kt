@@ -196,6 +196,7 @@ public class SnykClient(
                 id = it.id,
                 type = it.type,
                 attributes = defaultJson.decodeFromJsonElement(it.attributes),
+                relationships = it.relationships,
             )
         }
 

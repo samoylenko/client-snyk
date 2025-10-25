@@ -38,7 +38,8 @@ public class SnykClient(
     private val rateLimitDelay: Duration = 50.milliseconds,
 ) : AutoCloseable {
     private companion object {
-        const val SNYK_API_VERSION = "2024-06-21"
+        // Current recommended version: https://docs.snyk.io/snyk-api/rest-api/about-the-rest-api
+        const val SNYK_API_VERSION = "2024-10-15"
 
         const val TOKEN_TYPE_DEFAULT = "token"
         const val TOKEN_TYPE_FALLBACK = "bearer"

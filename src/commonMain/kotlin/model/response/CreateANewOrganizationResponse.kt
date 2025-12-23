@@ -1,6 +1,6 @@
 package dev.samoylenko.client.snyk.model.response
 
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 import kotlinx.serialization.Serializable
 
 @Serializable

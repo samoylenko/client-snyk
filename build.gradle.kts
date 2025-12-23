@@ -1,10 +1,9 @@
-import com.vanniktech.maven.publish.SonatypeHost
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnLockMismatchReport
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnPlugin
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootExtension
 
 group = "dev.samoylenko"
-version = "0.1.2"
+version = "0.2.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
@@ -26,7 +25,7 @@ plugins {
 
 kotlin {
     explicitApi()
-
+    jvmToolchain(21)
     withSourcesJar(publish = true)
 
     js {
@@ -43,9 +42,15 @@ kotlin {
     jvm {}
 
     sourceSets {
+        all {
+            languageSettings {
+                optIn("kotlin.uuid.ExperimentalUuidApi")
+                optIn("kotlinx.serialization.ExperimentalSerializationApi")
+            }
+        }
+
         commonMain.dependencies {
             api(libs.kotlinx.coroutines.core)
-            api(libs.kotlinx.datetime)
             api(libs.kotlinx.serialization.json)
 
             implementation(libs.ktor.client.auth)
@@ -84,7 +89,7 @@ signing {
 mavenPublishing {
     signAllPublications()
 
-    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+    publishToMavenCentral()
 
     pom {
         name = "Snyk Client - Kotlin Multiplatform"

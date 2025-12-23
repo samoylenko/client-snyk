@@ -3,8 +3,9 @@ package dev.samoylenko.client.snyk.model.response
 import kotlinx.serialization.Serializable
 
 @Serializable
-public data class IgnoredBy(
+public data class IssueClass(
     val id: String,
-    val name: String,
-    val email: String? = null,
+    val source: String,
+    val type: SourceType,
+    val url: String? = null,
 )

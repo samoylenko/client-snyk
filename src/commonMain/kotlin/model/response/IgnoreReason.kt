@@ -1,15 +1,12 @@
 package dev.samoylenko.client.snyk.model.response
 
-import kotlinx.datetime.Instant
-import kotlinx.serialization.Serializable
+import kotlin.time.Instant
 
-@Serializable
-public data class IgnoreReason(
-    val path: Collection<String>,
-    val reason: String,
-    val source: String,
-    val created: Instant,
-    val ignoredBy: IgnoredBy,
-    val reasonType: String,
-    val disregardIfFixable: Boolean
-)
+public interface IgnoreReason {
+    public val reason: String
+    public val created: Instant
+    public val ignoredBy: IgnoredBy
+    public val reasonType: String
+    public val disregardIfFixable: Boolean
+    public val expires: Instant?
+}

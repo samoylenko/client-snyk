@@ -11,6 +11,6 @@ Currently only supports JVM and NodeJS platforms.
 [source,kotlin]
 ----
 dependencies {
-    implementation("dev.samoylenko:client-snyk:0.1.1")
+    implementation("dev.samoylenko:client-snyk:0.1.2")
 }
 ----

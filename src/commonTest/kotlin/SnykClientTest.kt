@@ -8,10 +8,8 @@ import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.minutes
-import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
-@OptIn(ExperimentalUuidApi::class)
 class SnykClientTest {
 
     companion object {
@@ -21,8 +19,7 @@ class SnykClientTest {
 
         private val snykClient = SnykClient()
 
-        // Snyk Jira API currently doesn't support Infra type projects: https://docs.snyk.io/scan-with-snyk/snyk-iac/snyk-iac-integrations/jira-integration-for-iac
-        // Data from: https://docs.snyk.io/scan-with-snyk/snyk-iac
+        // Snyk Jira API currently doesn't support IaC projects: https://docs.snyk.io/scan-with-snyk/snyk-iac/snyk-iac-integrations/jira-integration-for-iac
         // Enum: https://docs.snyk.io/snyk-api/api-endpoints-index-and-tips/project-type-responses-from-the-api
         private val unsupportedTypesJiraApi = """
             armconfig
@@ -31,14 +28,14 @@ class SnykClientTest {
             k8sconfig
             terraformconfig
             terraformplan
-        """.trimIndent().split("\n")
+        """.trimIndent().lines()
     }
 
     @Test
     fun smokeTest() = runTest(timeout = 5.minutes) {
 
         // Test getting orgs
-        val snykOrgs = snykClient.getAllOrgs()
+        val snykOrgs = snykClient.getOrgs()
         assertTrue("Must be at least one Snyk org to test with") { snykOrgs.isNotEmpty() }
 
         snykOrgs.forEach {
@@ -73,7 +70,7 @@ class SnykClientTest {
                 // Rate limiting
                 delay(50.milliseconds)
 
-                // Test getting aggregate issues report
+                // Test getting an aggregated issue report
                 val projectIssuesAggregated = snykClient.getProjectIssuesAggregated(
                     orgInfo.id,
                     project.id,

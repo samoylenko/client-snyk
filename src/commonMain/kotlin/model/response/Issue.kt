@@ -13,7 +13,7 @@ public data class Issue(
     val introducedThrough: List<JsonElement>? = emptyList(),
     val isPatched: Boolean,
     val isIgnored: Boolean,
-    val ignoreReasons: List<IgnoreReason>? = emptyList(),
+    val ignoreReasons: List<IgnoreReasonInfo>? = emptyList(),
     val fixInfo: FixInfo? = null,
     val priority: Priority? = null,
     val links: PagedResponseLinks? = null,

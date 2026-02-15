@@ -1,3 +1,4 @@
+import dev.samoylenko.client.snyk.Extensions.isSupportedByJiraApi
 import dev.samoylenko.client.snyk.SnykClient
 import dev.samoylenko.client.snyk.model.request.AggregatedIssuesRequest
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -18,17 +19,6 @@ class SnykClientTest {
         private const val MAX_TAKE = 5
 
         private val snykClient = SnykClient()
-
-        // Snyk Jira API currently doesn't support IaC projects: https://docs.snyk.io/scan-with-snyk/snyk-iac/snyk-iac-integrations/jira-integration-for-iac
-        // Enum: https://docs.snyk.io/snyk-api/api-endpoints-index-and-tips/project-type-responses-from-the-api
-        private val unsupportedTypesJiraApi = """
-            armconfig
-            cloudformationconfig
-            helmconfig
-            k8sconfig
-            terraformconfig
-            terraformplan
-        """.trimIndent().lines()
     }
 
     @Test
@@ -48,7 +38,7 @@ class SnykClientTest {
         val orgProjects = snykOrgs.take(MAX_TAKE).associateWith {
             snykClient.getOrgProjects(it.id)
                 // Remove unsupported projects of unsupported types
-                .filterNot { projectInfo -> projectInfo.type.lowercase() in unsupportedTypesJiraApi }
+                .filterNot { projectInfo -> projectInfo.isSupportedByJiraApi() }
         }
         assertTrue("Must be at least one Snyk project to test with") { orgProjects.isNotEmpty() }
 

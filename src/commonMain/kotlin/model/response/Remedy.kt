@@ -8,6 +8,6 @@ import kotlinx.serialization.json.JsonObject
 public data class Remedy(
     @SerialName("correlation_id") val correlationId: String? = null,
     val description: String? = null,
-    val meta: JsonObject, // Skipped
+    val meta: JsonObject? = null, // Skipped
     val type: String,
 )

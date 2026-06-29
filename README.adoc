@@ -1,6 +1,7 @@
 = Snyk Client (Basic) - Kotlin Multiplatform
 
 A basic Snyk REST API client for use with Kotlin Multiplatform projects.
+Used in side-projects and minor scripts.
 
 == Supported platforms
 
@@ -11,6 +12,6 @@ Currently only supports JVM and NodeJS platforms.
 [source,kotlin]
 ----
 dependencies {
-    implementation("dev.samoylenko:client-snyk:0.1.2")
+    implementation("dev.samoylenko:client-snyk:0.2.0")
 }
 ----

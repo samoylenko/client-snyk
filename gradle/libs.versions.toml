@@ -1,12 +1,12 @@
 [versions]
-kotlin = "2.3.0"
-kotlin-logging = "7.0.14"
-kotlinx-coroutines = "1.10.2"
-kotlinx-serialization = "1.9.0"
-ktor = "3.3.3"
-logback = "1.5.23"
-maven-publish = "0.35.0"
-util-platform = "0.1.0"
+kotlin = "2.4.21"
+kotlin-logging = "8.0.4"
+kotlinx-coroutines = "1.11.0"
+kotlinx-serialization = "1.11.0"
+ktor = "3.6.0"
+logback = "1.6.5"
+maven-publish = "0.37.0"
+util-platform = "0.1.1"
 
 [plugins]
 kotlin-plugin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }

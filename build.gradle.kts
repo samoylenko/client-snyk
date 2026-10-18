@@ -1,11 +1,12 @@
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnLockMismatchReport
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnPlugin
-import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootExtension
+import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootEnvSpec
 
 group = "dev.samoylenko"
-version = "0.2.0"
+version = "0.2.1-SNAPSHOT"
 
 repositories {
+    mavenLocal()
     mavenCentral()
 
     maven {
@@ -120,7 +121,9 @@ mavenPublishing {
 }
 
 rootProject.plugins.withType(YarnPlugin::class.java) {
-    rootProject.the<YarnRootExtension>().ignoreScripts = true
-    rootProject.the<YarnRootExtension>().yarnLockAutoReplace = true
-    rootProject.the<YarnRootExtension>().yarnLockMismatchReport = YarnLockMismatchReport.WARNING
+    rootProject.the<YarnRootEnvSpec>().apply {
+        ignoreScripts.set(true)
+        yarnLockAutoReplace.set(true)
+        yarnLockMismatchReport.set(YarnLockMismatchReport.WARNING)
+    }
 }

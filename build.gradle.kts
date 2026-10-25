@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnPlugin
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootEnvSpec
 
 group = "dev.samoylenko"
-version = "0.2.1-SNAPSHOT"
+version = "0.2.1"
 
 repositories {
     mavenLocal()
